@@ -2,7 +2,7 @@
 * -------------------------------------------------------------------------------------------
 * | 提醒：此库中的所有函数都默认按区块对齐进行操作,若情况需要请考虑使用函数 PE_GetFOAByRVA 的合理性  |
 * -------------------------------------------------------------------------------------------
-*/
+*///                                仅支持32位PE结构
 #ifndef _PE_
 #define _PE_
 #include <Windows.h>
@@ -75,6 +75,24 @@ VOID WINAPI PE_EnumImportTableDllFunctions(LPVOID lpBuffer, LPVOID CallBack);
 
 //枚举区块头。
 VOID WINAPI PE_EnumSectionHeader(LPVOID lpBuffer, LPVOID CallBack);
+
+//PE文件是否为Dll文件
+BOOL WINAPI PE_IsDllFile(LPVOID lpBuffer);
+
+//PE文件是否为系统文件
+BOOL WINAPI PE_IsSystemFile(LPVOID lpBuffer);
+
+//PE文件是否为32位文件
+BOOL WINAPI PE_Is32BitFile(LPVOID lpBuffer);
+
+//PE文件是否为GUI程序(图形用户界面子系统)
+BOOL WINAPI PE_IsGUIFile(LPVOID lpBuffer);
+
+//PE文件是否为CUI程序(字符模式子系统)
+BOOL WINAPI PE_IsCUIFile(LPVOID lpBuffer);
+
+//PE文件是否为Native程序(驱动)
+BOOL WINAPI PE_IsNativeFile(LPVOID lpBuffer);
 
 
 #endif

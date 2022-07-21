@@ -49,7 +49,6 @@ BOOL WINAPI PE_CheckPEFileVaild(LPVOID lpBuffer) {
 	return (pDos->e_magic == IMAGE_DOS_SIGNATURE && pNt->Signature == IMAGE_NT_SIGNATURE);
 }
 
-
 PIMAGE_SECTION_HEADER WINAPI PE_GetSectionHeaderByNameA(LPVOID lpBuffer, LPCSTR szSectionName) {
 	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
 	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
@@ -184,3 +183,46 @@ PIMAGE_OPTIONAL_HEADER WINAPI PE_GetOptionalFileHeader(LPVOID lpBuffer) {
 	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
 	return &(pNt->OptionalHeader);
 }
+
+VOID WINAPI PE_SetTimeDateStamp(LPVOID lpBuffer, DWORD dwNewTimeDateStamp) {
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
+	pNt->FileHeader.TimeDateStamp = dwNewTimeDateStamp;
+}
+
+BOOL WINAPI PE_IsDllFile(LPVOID lpBuffer) {
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
+	return ((pNt->FileHeader.Characteristics & IMAGE_FILE_DLL) != NULL);
+}
+
+BOOL WINAPI PE_IsSystemFile(LPVOID lpBuffer) {
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
+	return ((pNt->FileHeader.Characteristics & IMAGE_FILE_SYSTEM) != NULL);
+}
+
+BOOL WINAPI PE_Is32BitFile(LPVOID lpBuffer) {
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
+	return ((pNt->FileHeader.Characteristics & IMAGE_FILE_32BIT_MACHINE) != NULL);
+}
+
+BOOL WINAPI PE_IsGUIFile(LPVOID lpBuffer) {
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
+	return ((pNt->OptionalHeader.Subsystem & IMAGE_SUBSYSTEM_WINDOWS_GUI) != NULL);
+}
+
+BOOL WINAPI PE_IsCUIFile(LPVOID lpBuffer){
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
+	return ((pNt->OptionalHeader.Subsystem & IMAGE_SUBSYSTEM_WINDOWS_CUI) != NULL);
+}
+
+BOOL WINAPI PE_IsNativeFile(LPVOID lpBuffer) {
+	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
+	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
+	return ((pNt->OptionalHeader.Subsystem & IMAGE_SUBSYSTEM_NATIVE) != NULL);
+}
+
