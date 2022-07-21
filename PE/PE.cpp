@@ -211,18 +211,17 @@ BOOL WINAPI PE_Is32BitFile(LPVOID lpBuffer) {
 BOOL WINAPI PE_IsGUIFile(LPVOID lpBuffer) {
 	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
 	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
-	return ((pNt->OptionalHeader.Subsystem & IMAGE_SUBSYSTEM_WINDOWS_GUI) != NULL);
+	return (pNt->OptionalHeader.Subsystem == IMAGE_SUBSYSTEM_WINDOWS_GUI);
 }
 
 BOOL WINAPI PE_IsCUIFile(LPVOID lpBuffer){
 	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
 	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
-	return ((pNt->OptionalHeader.Subsystem & IMAGE_SUBSYSTEM_WINDOWS_CUI) != NULL);
+	return (pNt->OptionalHeader.Subsystem == IMAGE_SUBSYSTEM_WINDOWS_CUI);
 }
 
 BOOL WINAPI PE_IsNativeFile(LPVOID lpBuffer) {
 	PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)lpBuffer;
 	PIMAGE_NT_HEADERS pNt = (PIMAGE_NT_HEADERS)((DWORD)lpBuffer + pDos->e_lfanew);
-	return ((pNt->OptionalHeader.Subsystem & IMAGE_SUBSYSTEM_NATIVE) != NULL);
+	return (pNt->OptionalHeader.Subsystem == IMAGE_SUBSYSTEM_NATIVE);
 }
-
